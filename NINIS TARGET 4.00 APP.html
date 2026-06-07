@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NINIS TARGET IPK APP V4.00</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080C14;--bg2:#0E1420;--bg3:#141C2C;
+  --surface:#182030;--surface2:#1E2A3E;--surface3:#243348;
+  --border:#253045;--border2:#3A4F72;
+  --text:#E8EDF5;--text2:#A8B8D0;--text3:#5E7294;
+  --accent:#3B82F6;--accent2:#60A5FA;--accent3:#93C5FD;
+  --accent-glow:rgba(59,130,246,.2);
+  --gold:#F59E0B;--gold2:#FCD34D;--gold-bg:rgba(245,158,11,.1);--gold-bd:rgba(245,158,11,.3);
+  --green:#10B981;--green2:#34D399;--green-bg:rgba(16,185,129,.1);--green-bd:rgba(16,185,129,.3);
+  --red:#EF4444;--red2:#F87171;--red-bg:rgba(239,68,68,.1);--red-bd:rgba(239,68,68,.3);
+  --amber:#F59E0B;--amber-bg:rgba(245,158,11,.1);--amber-bd:rgba(245,158,11,.3);
+  --purple:#8B5CF6;--purple2:#A78BFA;--purple-bg:rgba(139,92,246,.1);--purple-bd:rgba(139,92,246,.3);
+  --cyan:#06B6D4;--cyan-bg:rgba(6,182,212,.1);
+  --rose:#F43F5E;--rose-bg:rgba(244,63,94,.1);
+  --r:10px;--r-sm:7px;--r-lg:14px;--r-xl:20px;--r-2xl:24px;
+  --shadow:0 2px 12px rgba(0,0,0,.4);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.5);
+  --glow-blue:0 0 24px rgba(59,130,246,.18);
+  --glow-gold:0 0 24px rgba(245,158,11,.18);
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:1.5rem 1rem 5rem;font-size:14px;line-height:1.5;
+  background-image:radial-gradient(ellipse 900px 500px at 50% -150px,rgba(59,130,246,.07) 0%,transparent 70%),
+    radial-gradient(ellipse 700px 400px at 90% 60%,rgba(139,92,246,.04) 0%,transparent 60%),
+    radial-gradient(ellipse 500px 300px at 10% 80%,rgba(6,182,212,.03) 0%,transparent 60%);}
+.page{max-width:1200px;margin:0 auto}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:.75rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.topbar-brand{display:flex;align-items:center;gap:14px}
+.topbar-logo{width:46px;height:46px;background:linear-gradient(135deg,#1D4ED8,#7C3AED);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;box-shadow:0 0 28px rgba(59,130,246,.45),0 0 60px rgba(139,92,246,.2);}
+.brand-block{}
+.topbar-title{font-size:1.1rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(90deg,var(--accent2),var(--purple2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.topbar-sub{font-size:.68rem;color:var(--text3);margin-top:1px;letter-spacing:.03em}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.version-tag{font-size:.62rem;background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(139,92,246,.15));color:var(--accent2);border:1px solid rgba(59,130,246,.3);border-radius:99px;padding:3px 10px;font-weight:700;letter-spacing:.06em;}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:4px;margin-bottom:1.5rem;width:fit-content;overflow-x:auto;}
+.tab-btn{padding:7px 18px;border-radius:7px;border:none;background:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.01em;}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent),#7C3AED);color:#fff;box-shadow:0 2px 14px rgba(59,130,246,.4);}
+.tab-btn:not(.active):hover{background:var(--surface2);color:var(--text2)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* ── DROPZONE ── */
+.drop-zone{border:2px dashed var(--border2);border-radius:var(--r-xl);background:var(--surface);padding:3.5rem 2rem;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.drop-zone::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(59,130,246,.05) 0%,transparent 70%);pointer-events:none;}
+.drop-zone.drag{border-color:var(--accent);background:var(--surface2);box-shadow:0 0 0 4px rgba(59,130,246,.1),inset 0 0 40px rgba(59,130,246,.04);}
+.drop-zone:hover{border-color:var(--accent2);background:var(--surface2)}
+.dz-icon{width:68px;height:68px;background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(139,92,246,.12));border:1px solid rgba(59,130,246,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-size:1.7rem;box-shadow:0 0 28px rgba(59,130,246,.12);}
+.dz-title{font-size:1.15rem;font-weight:800;margin-bottom:.5rem;color:var(--text)}
+.dz-sub{font-size:.78rem;color:var(--text3);line-height:1.9;margin-bottom:1.5rem}
+.dz-sub strong{color:var(--text2)}
+.dz-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:.85rem}
+.dz-badge{display:inline-flex;align-items:center;gap:5px;font-size:.67rem;color:var(--text3);background:var(--surface3);border:1px solid var(--border);border-radius:99px;padding:3px 11px;}
+input[type=file]{display:none}
+
+/* ── BUTTONS ── */
+.btn-upload-big{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),#7C3AED);color:#fff;border:none;border-radius:var(--r);padding:.75rem 1.7rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(59,130,246,.4);letter-spacing:.01em;}
+.btn-upload-big:hover{transform:translateY(-2px);box-shadow:0 6px 26px rgba(59,130,246,.5);}
+.btn-upload-big:active{transform:scale(.97)}
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;font-weight:600;padding:7px 14px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn:hover{background:var(--surface3);border-color:var(--border2);color:var(--text)}.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#7C3AED);color:#fff;border-color:transparent;box-shadow:0 2px 12px rgba(59,130,246,.3);}
+.btn-primary:hover{box-shadow:0 4px 18px rgba(59,130,246,.45);color:#fff}
+.btn-green{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}.btn-green:hover{background:rgba(16,185,129,.18)}
+.btn-red{color:var(--red);border-color:var(--red-bd);background:transparent}.btn-red:hover{background:var(--red-bg)}
+.btn-gold{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-bd);font-weight:700}.btn-gold:hover{background:rgba(245,158,11,.18)}
+.actions{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+
+/* ── PROGRESS ── */
+.progress-wrap{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.25rem;box-shadow:var(--shadow);}
+.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.prog-label{font-size:.78rem;color:var(--text2);font-weight:600}
+.prog-pct{font-size:.72rem;color:var(--accent2);font-family:'DM Mono',monospace;font-weight:500}
+.prog-track{background:var(--bg3);border-radius:99px;height:6px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),#7C3AED,var(--cyan));background-size:200% 100%;transition:width .4s cubic-bezier(.4,0,.2,1);animation:shimmer 2s linear infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.prog-status{font-size:.68rem;color:var(--text3);margin-top:.4rem}
+
+/* ── ALERT BOXES ── */
+.error-box{display:none;background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r);padding:.9rem 1.2rem;margin-bottom:1.1rem;font-size:.8rem;color:var(--red2);line-height:1.6;}
+.info-box{display:none;background:var(--cyan-bg);border:1px solid rgba(6,182,212,.3);border-radius:var(--r);padding:.75rem 1.2rem;margin-bottom:1rem;font-size:.78rem;color:var(--cyan);line-height:1.6;}
+
+/* ── HEADER CARD ── */
+.header-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-2xl);padding:1.75rem;margin-bottom:1.1rem;box-shadow:var(--glow-blue);display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:start;position:relative;overflow:hidden;}
+.header-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),#7C3AED,var(--cyan),transparent);}
+.header-card::after{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 70%);pointer-events:none;}
+.h-name{font-size:1.45rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.5rem;color:var(--text)}
+.h-meta{display:flex;gap:14px;flex-wrap:wrap}
+.h-meta span{font-size:.72rem;color:var(--text3);display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;}
+.h-meta span strong{color:var(--text2);font-weight:500}
+.ipk-block{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(124,58,237,.12));border:1px solid rgba(59,130,246,.2);border-radius:var(--r-lg);padding:1.1rem 1.8rem;text-align:center;min-width:130px;box-shadow:var(--glow-blue);}
+.ipk-lbl{font-size:.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:.16em;margin-bottom:5px;font-weight:700}
+.ipk-val{font-size:2.6rem;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-.05em;line-height:1;background:linear-gradient(135deg,var(--accent2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ipk-grade{font-size:.64rem;color:var(--text3);margin-top:6px;font-weight:700;letter-spacing:.04em}
+
+/* ── METRICS ── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem;margin-bottom:1.1rem;}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.95rem 1.1rem;box-shadow:var(--shadow);transition:all .2s;cursor:default;}
+.metric:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.m-lbl{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;font-weight:700}
+.m-val{font-size:1.6rem;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-.03em}
+.m-val.blue{color:var(--accent2)}.m-val.green{color:var(--green2)}.m-val.red{color:var(--red2)}.m-val.amber{color:var(--gold)}.m-val.purple{color:var(--purple2)}.m-val.cyan{color:var(--cyan)}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.4rem 1.6rem;box-shadow:var(--shadow);margin-bottom:1.1rem;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.card-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.11em;color:var(--text3)}
+.card-sub{font-size:.65rem;color:var(--text3)}
+
+/* ── TARGET IPK CARD ── */
+.target-card{background:linear-gradient(135deg,rgba(245,158,11,.06),rgba(16,185,129,.04));border:1px solid var(--gold-bd);border-radius:var(--r-2xl);padding:1.75rem;margin-bottom:1.1rem;position:relative;overflow:hidden;box-shadow:var(--glow-gold);}
+.target-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--green2),transparent);}
+.target-card::after{content:'';position:absolute;top:-80px;right:-80px;width:220px;height:220px;background:radial-gradient(circle,rgba(245,158,11,.06) 0%,transparent 70%);pointer-events:none;}
+.target-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
+.target-title{display:flex;align-items:center;gap:10px}
+.target-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),#D97706);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 14px rgba(245,158,11,.35);}
+.target-label{font-size:.95rem;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.target-sub-label{font-size:.68rem;color:var(--text3);margin-top:1px}
+
+/* Target input area */
+.target-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:720px){.target-inputs{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.target-inputs{grid-template-columns:1fr}}
+.target-field{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;}
+.tf-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);font-weight:700;margin-bottom:.5rem;}
+.tf-input-wrap{display:flex;align-items:center;gap:8px}
+.tf-input{font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--gold);background:transparent;border:none;outline:none;width:100%;padding:0;}
+.tf-unit{font-size:.72rem;color:var(--text3);white-space:nowrap;font-weight:600}
+.tf-range{width:100%;margin-top:.75rem;-webkit-appearance:none;height:4px;border-radius:99px;background:var(--border2);outline:none;}
+.tf-range::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#D97706);cursor:pointer;box-shadow:0 0 8px rgba(245,158,11,.4);}
+.tf-range::-moz-range-thumb{width:16px;height:16px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--gold),#D97706);cursor:pointer;}
+
+/* Result panel */
+.target-result{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+@media(max-width:640px){.target-result{grid-template-columns:1fr}}
+.result-block{border-radius:var(--r);padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.35rem;}
+.result-block.feasible{background:var(--green-bg);border:1px solid var(--green-bd);}
+.result-block.warning{background:var(--amber-bg);border:1px solid var(--amber-bd);}
+.result-block.impossible{background:var(--red-bg);border:1px solid var(--red-bd);}
+.result-block.info{background:var(--cyan-bg);border:1px solid rgba(6,182,212,.25);}
+.rb-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;opacity:.75}
+.rb-val{font-size:1.7rem;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-.03em}
+.rb-sub{font-size:.7rem;opacity:.8;font-weight:500}
+.feasible .rb-label{color:var(--green2)}.feasible .rb-val{color:var(--green2)}.feasible .rb-sub{color:var(--green2)}
+.warning .rb-label{color:var(--gold)}.warning .rb-val{color:var(--gold)}.warning .rb-sub{color:var(--gold)}
+.impossible .rb-label{color:var(--red2)}.impossible .rb-val{color:var(--red2)}.impossible .rb-sub{color:var(--red2)}
+.info .rb-label{color:var(--cyan)}.info .rb-val{color:var(--cyan)}.info .rb-sub{color:var(--cyan)}
+
+/* Status badge besar */
+.target-status-bar{display:flex;align-items:center;gap:12px;padding:1rem 1.3rem;border-radius:var(--r);background:var(--surface2);border:1px solid var(--border);margin-bottom:1rem;}
+.tsb-icon{font-size:1.5rem;flex-shrink:0}
+.tsb-text{flex:1}
+.tsb-main{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.tsb-detail{font-size:.72rem;color:var(--text3);line-height:1.6}
+
+/* Grade estimator table */
+.grade-est-wrap{overflow-x:auto}
+.grade-est{width:100%;border-collapse:collapse;font-size:.77rem;margin-top:.5rem;}
+.grade-est thead th{background:var(--bg3);font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.grade-est tbody tr:not(:last-child) td{border-bottom:1px solid var(--border)}
+.grade-est tbody tr:hover td{background:var(--surface2)}
+.grade-est td{padding:9px 12px;vertical-align:middle}
+.grade-est .ge-grade{font-family:'DM Mono',monospace;font-weight:700;font-size:.82rem}
+.grade-est .ge-poin{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--text3)}
+.gauge-mini{display:inline-block;width:80px;height:6px;background:var(--bg3);border-radius:99px;overflow:hidden;vertical-align:middle;margin-left:6px;}
+.gauge-mini-fill{height:100%;border-radius:99px;transition:width .5s}
+.ge-result-ipk{font-family:'DM Mono',monospace;font-weight:800;font-size:.88rem}
+.ge-feasibility{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:99px}
+.feas-easy{background:var(--green-bg);color:var(--green2);border:1px solid var(--green-bd)}
+.feas-ok{background:var(--cyan-bg);color:var(--cyan);border:1px solid rgba(6,182,212,.25)}
+.feas-hard{background:var(--amber-bg);color:var(--gold);border:1px solid var(--amber-bd)}
+.feas-impossible{background:var(--red-bg);color:var(--red2);border:1px solid var(--red-bd)}
+
+/* IPK Gauge arc */
+.ipk-gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem;margin-bottom:1rem}
+.ipk-gauge-svg{overflow:visible}
+.gauge-track{fill:none;stroke:var(--surface3);stroke-width:14;stroke-linecap:round}
+.gauge-fill-cur{fill:none;stroke-width:14;stroke-linecap:round;stroke:var(--accent2);transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.gauge-fill-tgt{fill:none;stroke-width:14;stroke-linecap:round;stroke:var(--gold);stroke-dasharray:4 6;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.gauge-labels{font-family:'DM Mono',monospace}
+
+/* Progress IPK bar */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-lbl{font-size:.68rem;color:var(--text3);font-family:'DM Mono',monospace;min-width:54px;text-align:right}
+.bar-track{flex:1;background:var(--bg3);border-radius:99px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;display:flex;align-items:center;padding-left:10px;transition:width .7s cubic-bezier(.4,0,.2,1);opacity:.9}
+.bar-txt{font-size:.6rem;color:rgba(255,255,255,.85);font-family:'DM Mono',monospace;white-space:nowrap}
+.bar-ipk{font-size:.72rem;font-weight:700;font-family:'DM Mono',monospace;min-width:36px;text-align:right}
+
+/* Controls */
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.ctrl-g{display:flex;align-items:center;gap:6px}
+.ctrl-g label{font-size:.7rem;color:var(--text3);white-space:nowrap;font-weight:600}
+select,input[type=text]{font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;padding:6px 28px 6px 10px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E7294' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color .15s,box-shadow .15s;}
+input[type=text]{background-image:none;padding-right:10px}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.12);}
+.search-wrap{position:relative;margin-left:auto}
+.search-wrap input{padding-left:30px;width:200px}
+.search-ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.75rem;pointer-events:none}
+
+/* Add Panel */
+.add-panel{display:none;margin-bottom:1rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.5rem;}
+.add-panel.open{display:block}
+.ap-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);margin-bottom:.9rem}
+.ap-grid{display:grid;grid-template-columns:120px 1fr 60px 80px 65px auto;gap:8px;align-items:end}
+.field label{display:block;font-size:.62rem;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.field input,.field select{width:100%;padding:6px 9px;font-size:.75rem;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;appearance:none}
+
+/* Table */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);margin-bottom:1.25rem;}
+table{width:100%;border-collapse:collapse;font-size:.77rem}
+thead th{background:var(--bg3);font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text3);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;user-select:none;}
+thead th.sortable{cursor:pointer;transition:color .12s}thead th.sortable:hover{color:var(--text2)}
+thead th.sort-asc::after{content:' ▲';font-size:.58rem;color:var(--accent2)}
+thead th.sort-desc::after{content:' ▼';font-size:.58rem;color:var(--accent2)}
+th.c,td.c{text-align:center}
+tbody tr{transition:background .1s}tbody tr:hover td{background:var(--surface2)}
+tbody tr:not(:last-child) td{border-bottom:1px solid var(--border)}
+td{padding:9px 12px;vertical-align:middle}
+td.code{font-family:'DM Mono',monospace;font-size:.67rem;color:var(--text3)}
+tfoot td{padding:9px 12px;font-weight:700;border-top:2px solid var(--border);background:var(--bg3);font-size:.73rem}
+
+/* Badges */
+.badge{display:inline-block;padding:3px 8px;border-radius:99px;font-size:.62rem;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.b-ll{background:var(--green-bg);color:var(--green2);border:1px solid var(--green-bd)}
+.b-bl{background:var(--surface3);color:var(--text3);border:1px solid var(--border)}
+.b-kes{background:var(--amber-bg);color:var(--gold);border:1px solid var(--amber-bd)}
+.b-sem{background:var(--surface3);color:var(--text3);border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:.6rem}
+.b-extra{background:var(--purple-bg);color:var(--purple2);border:1px solid var(--purple-bd)}
+
+.gr{font-weight:700;font-family:'DM Mono',monospace;font-size:.77rem}
+.gr-a{color:var(--green2)}.gr-b{color:var(--accent2)}.gr-c{color:var(--gold)}.gr-d{color:var(--red2)}.gr-x{color:var(--text3)}
+.del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:.8rem;padding:3px 5px;border-radius:4px;line-height:1;transition:all .1s;}
+.del-btn:hover{color:var(--red2);background:var(--red-bg)}
+.nilai-select{font-family:'DM Mono',monospace;font-size:.73rem;font-weight:700;padding:3px 20px 3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%235E7294' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 5px center;}
+
+/* Compare */
+.student-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin-bottom:1rem;}
+.student-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;position:relative;}
+.student-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.student-card.active{border-color:var(--accent);background:rgba(59,130,246,.06);box-shadow:0 0 0 3px rgba(59,130,246,.1);}
+.sc-name{font-size:.88rem;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.sc-meta{font-size:.68rem;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:.6rem}
+.sc-ipk{display:flex;align-items:center;gap:8px}
+.sc-ipk-val{font-size:1.3rem;font-weight:800;font-family:'DM Mono',monospace}
+.sc-ipk-grade{font-size:.62rem;color:var(--text3);font-weight:600}
+.sc-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:.75rem;padding:4px 6px;border-radius:4px;line-height:1;transition:all .12s;}
+.sc-del:hover{color:var(--red2);background:var(--red-bg)}
+.cmp-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.cmp-lbl{font-size:.68rem;color:var(--text3);min-width:64px;text-align:right}
+.cmp-bars{flex:1;display:flex;flex-direction:column;gap:3px}
+.cmp-bar{height:15px;border-radius:99px;transition:width .65s;display:flex;align-items:center;padding-left:8px;font-size:.58rem;color:rgba(255,255,255,.9);font-family:'DM Mono',monospace;white-space:nowrap;opacity:.85;}
+.cmp-val{font-size:.66rem;min-width:36px;text-align:right;font-weight:700;font-family:'DM Mono',monospace}
+
+/* Divider */
+.section-divider{display:flex;align-items:center;gap:10px;margin:1.25rem 0;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+.section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Print */
+@media print{
+  body{background:#fff;color:#000;padding:.5rem}
+  .tab-bar,.actions,.controls,.add-panel,.topbar-actions,.sc-del,.del-btn,.target-card .tf-range{display:none!important}
+  .card,.header-card,.metric,.table-wrap,.target-card{box-shadow:none;border-color:#ddd}
+  .table-wrap{overflow:visible}
+  table{font-size:.7rem}
+  :root{--text:#000;--bg:#fff;--surface:#fff;--bg3:#f5f5f5;--surface2:#f0f0f0}
+}
+
+/* Responsive */
+@media(max-width:720px){
+  .header-card{grid-template-columns:1fr}.ipk-block{justify-self:start}
+  .ap-grid{grid-template-columns:1fr 1fr}
+  table{font-size:.7rem}td,th{padding:6px 7px}
+  .search-wrap input{width:140px}
+  .metrics{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .38s ease both}
+@keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.3)}50%{box-shadow:0 0 0 6px rgba(245,158,11,.0)}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">🎯</div>
+    <div class="brand-block">
+      <div class="topbar-title">NINIS TARGET IPK APP</div>
+      <div class="topbar-sub">Import LKAM · Estimasi Nilai · Universitas Terbuka</div>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span class="version-tag">V4.00 · PDF.js</span>
+    <button class="btn btn-green" onclick="printPage()">🖨 Cetak / PDF</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('tab-single',this)">📊 Detail Mahasiswa</button>
+  <button class="tab-btn" onclick="switchTab('tab-target',this)">🎯 Target IPK</button>
+  <button class="tab-btn" onclick="switchTab('tab-compare',this)">⚖ Perbandingan</button>
+</div>
+
+<!-- ══════════ TAB: SINGLE ══════════ -->
+<div id="tab-single" class="tab-pane active">
+  <div class="drop-zone" id="drop-zone"
+       onclick="document.getElementById('fi-single').click()"
+       ondragover="ev=event;ev.preventDefault();ev.currentTarget.classList.add('drag')"
+       ondragleave="event.currentTarget.classList.remove('drag')"
+       ondrop="onDrop(event,'single')">
+    <div class="dz-icon">📄</div>
+    <div class="dz-title">Import LKAM Mahasiswa</div>
+    <div class="dz-sub">
+      Seret &amp; lepas file PDF ke sini, atau klik untuk memilih.<br>
+      Mendukung <strong>semua versi PDF</strong> — dikompresi, tidak, atau teks biasa.<br>
+      <em>Data diproses sepenuhnya di browser — tidak dikirim ke server manapun.</em>
+    </div>
+    <button class="btn-upload-big" onclick="event.stopPropagation();document.getElementById('fi-single').click()">⬆ Pilih File PDF LKAM</button>
+    <div class="dz-badges">
+      <span class="dz-badge">🔒 Privasi terjaga</span>
+      <span class="dz-badge">📁 Semua format PDF</span>
+      <span class="dz-badge">⚡ Proses instan</span>
+      <span class="dz-badge">🎯 Target IPK otomatis</span>
+    </div>
+    <input type="file" id="fi-single" accept=".pdf,application/pdf" onchange="onFileSelect(event,'single')"/>
+  </div>
+
+  <div class="progress-wrap" id="prog-single">
+    <div class="prog-header">
+      <div class="prog-label" id="prog-lbl-single">Membaca PDF...</div>
+      <div class="prog-pct" id="prog-stat-single">0%</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill-single" style="width:0%"></div></div>
+    <div class="prog-status" id="prog-sub-single"></div>
+  </div>
+
+  <div class="error-box" id="err-single"></div>
+  <div class="info-box" id="info-single"></div>
+
+  <div id="app-single" style="display:none">
+    <div class="header-card fade-in">
+      <div>
+        <div class="h-name" id="h-nama">—</div>
+        <div class="h-meta">
+          <span>🆔 <strong id="h-nim">—</strong></span>
+          <span>📚 <strong id="h-prodi">—</strong></span>
+          <span>📍 <strong id="h-ut">—</strong></span>
+        </div>
+      </div>
+      <div class="ipk-block">
+        <div class="ipk-lbl">IPK</div>
+        <div class="ipk-val" id="h-ipk">—</div>
+        <div class="ipk-grade" id="h-grade">—</div>
+      </div>
+    </div>
+
+    <div class="metrics fade-in" id="metrics-row"></div>
+
+    <div class="card fade-in">
+      <div class="card-head">
+        <span class="card-title">Progres IPK per Semester</span>
+        <span class="card-sub">Berdasarkan MK yang sudah lulus</span>
+      </div>
+      <div id="chart-bars"></div>
+    </div>
+
+    <div class="controls">
+      <div class="ctrl-g"><label>Semester:</label>
+        <select id="f-sem" onchange="renderTable()">
+          <option value="">Semua</option>
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+          <option>5</option><option>6</option><option>7</option><option>8</option>
+        </select>
+      </div>
+      <div class="ctrl-g"><label>Status:</label>
+        <select id="f-stat" onchange="renderTable()">
+          <option value="">Semua</option><option value="LL">Lulus</option><option value="BL">Belum Lulus</option>
+        </select>
+      </div>
+      <div class="ctrl-g"><label>Tampil:</label>
+        <select id="f-show" onchange="renderTable()">
+          <option value="all">Semua MK</option><option value="ll">Lulus saja</option>
+        </select>
+      </div>
+      <div class="ctrl-g"><label>Inti/Non:</label>
+        <select id="f-inti" onchange="renderTable()">
+          <option value="">Semua</option><option value="I">Inti</option><option value="N">Non Inti</option>
+        </select>
+      </div>
+      <div class="search-wrap">
+        <span class="search-ico">🔍</span>
+        <input type="text" id="f-search" placeholder="Cari kode / nama MK..." oninput="renderTable()"/>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="toggleAdd()">＋ Tambah / Simulasi MK</button>
+      <button class="btn btn-red" onclick="resetExtra()">↺ Reset Simulasi</button>
+      <button class="btn btn-gold" onclick="switchTab('tab-target',document.querySelectorAll('.tab-btn')[1])">🎯 Lihat Target IPK</button>
+      <button class="btn" onclick="loadNew()" style="margin-left:auto">📂 Ganti LKAM</button>
+    </div>
+
+    <div class="add-panel" id="add-panel">
+      <div class="ap-title">Tambah / Simulasi Mata Kuliah</div>
+      <div class="ap-grid">
+        <div class="field"><label>Kode MK</label><input id="n-kode" placeholder="mis. STSI4xxx"/></div>
+        <div class="field"><label>Nama Mata Kuliah</label><input id="n-nama" placeholder="Nama mata kuliah..."/></div>
+        <div class="field"><label>SKS</label>
+          <select id="n-sks"><option>2</option><option selected>3</option><option>4</option><option>6</option></select>
+        </div>
+        <div class="field"><label>Nilai</label>
+          <select id="n-nilai">
+            <option value="-">— (BL)</option><option>A</option><option>A-</option><option>B+</option>
+            <option>B</option><option>B-</option><option>C+</option><option>C</option><option>D</option><option>E</option>
+          </select>
+        </div>
+        <div class="field"><label>Semester</label>
+          <select id="n-sem">
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option selected>7</option><option>8</option>
+          </select>
+        </div>
+        <div class="field" style="display:flex;align-items:flex-end;gap:6px;padding-bottom:1px">
+          <button class="btn btn-primary" onclick="addMK()">Simpan</button>
+          <button class="btn" onclick="toggleAdd()">Batal</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap fade-in">
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-col="kode" onclick="sortBy('kode')">Kode MK</th>
+            <th class="sortable" data-col="nama" onclick="sortBy('nama')">Nama Mata Kuliah</th>
+            <th class="c">Sem</th>
+            <th class="c sortable" data-col="sks" onclick="sortBy('sks')">SKS</th>
+            <th class="c sortable" data-col="nilai" onclick="sortBy('nilai')">Nilai</th>
+            <th class="c">Poin</th>
+            <th class="c">Mutu×SKS</th>
+            <th class="c sortable" data-col="kelulusan" onclick="sortBy('kelulusan')">Status</th>
+            <th class="c">Inti</th>
+            <th class="c"></th>
+          </tr>
+        </thead>
+        <tbody id="tbl-body"></tbody>
+        <tfoot id="tbl-foot"></tfoot>
+      </table>
+    </div>
+
+    <p style="font-size:.68rem;color:var(--text3);text-align:center;padding-bottom:1rem;line-height:1.8">
+      IPK = Σ(Poin×SKS) ÷ Σ SKS Lulus &nbsp;|&nbsp;
+      Nilai <strong>**</strong> &amp; <strong>—</strong> tidak masuk perhitungan &nbsp;|&nbsp;
+      Klik nilai BL untuk mensimulasi hasil
+    </p>
+  </div>
+</div>
+
+<!-- ══════════ TAB: TARGET IPK ══════════ -->
+<div id="tab-target" class="tab-pane">
+  <div id="target-no-data" style="text-align:center;padding:4rem 2rem">
+    <div style="font-size:3rem;margin-bottom:1rem">📊</div>
+    <div style="font-size:1rem;font-weight:700;color:var(--text2);margin-bottom:.5rem">Belum ada data LKAM</div>
+    <div style="font-size:.8rem;color:var(--text3);margin-bottom:1.5rem">Import PDF LKAM terlebih dahulu dari tab Detail Mahasiswa untuk menggunakan fitur Target IPK.</div>
+    <button class="btn btn-primary" onclick="switchTab('tab-single',document.querySelectorAll('.tab-btn')[0])">⬆ Import LKAM Sekarang</button>
+  </div>
+
+  <div id="target-content" style="display:none">
+    <!-- Target card -->
+    <div class="target-card fade-in">
+      <div class="target-header">
+        <div class="target-title">
+          <div class="target-icon">🎯</div>
+          <div>
+            <div class="target-label">Kalkulator Target IPK</div>
+            <div class="target-sub-label">Estimasi nilai yang dibutuhkan untuk mencapai target IPK</div>
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="resetTargetCalc()">↺ Reset</button>
+      </div>
+
+      <!-- Gauge arc -->
+      <div class="ipk-gauge-wrap">
+        <svg class="ipk-gauge-svg" width="320" height="190" viewBox="-10 0 300 190">
+          <defs>
+            <linearGradient id="gCur" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3B82F6"/>
+              <stop offset="100%" stop-color="#60A5FA"/>
+            </linearGradient>
+            <linearGradient id="gTgt" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#F59E0B"/>
+              <stop offset="100%" stop-color="#FCD34D"/>
+            </linearGradient>
+          </defs>
+          <!-- Track (cx=140,cy=140,r=110, from left→right half-circle) -->
+          <path class="gauge-track" d="M 30,140 A 110,110 0 0,1 250,140"/>
+          <!-- Current IPK fill (blue solid) -->
+          <path class="gauge-fill-cur" d="M 30,140 A 110,110 0 0,1 250,140" id="gauge-cur-el" stroke="url(#gCur)"/>
+          <!-- Target IPK fill (gold dashed overlay) -->
+          <path class="gauge-fill-tgt" d="M 30,140 A 110,110 0 0,1 250,140" id="gauge-tgt-el" stroke="url(#gTgt)"/>
+          <!-- Fixed labels -->
+          <text x="22" y="158" font-size="10" fill="#5E7294" font-family="'DM Mono',monospace" text-anchor="middle">0.00</text>
+          <text x="258" y="158" font-size="10" fill="#5E7294" font-family="'DM Mono',monospace" text-anchor="middle">4.00</text>
+          <text x="140" y="30" font-size="10" fill="#5E7294" font-family="'DM Mono',monospace" text-anchor="middle">2.00</text>
+          <!-- IPK centre display -->
+          <text x="140" y="118" text-anchor="middle" font-size="30" font-weight="800" fill="#60A5FA" font-family="'DM Mono',monospace" id="gauge-cur-lbl">—</text>
+          <text x="140" y="136" text-anchor="middle" font-size="10" fill="#5E7294" font-family="'Plus Jakarta Sans',sans-serif" id="gauge-sub-lbl">IPK Saat Ini</text>
+          <!-- Target needle is injected by JS into gauge-needle group -->
+          <text id="gauge-tgt-lbl" x="140" y="158" text-anchor="middle" font-size="9" fill="#F59E0B" font-family="'DM Mono',monospace" style="display:none">▲</text>
+        </svg>
+        <div style="display:flex;gap:20px;font-size:.68rem;color:var(--text3)">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:20px;height:3px;background:var(--accent2);border-radius:2px;display:inline-block"></span>IPK Saat Ini</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:20px;height:3px;border-radius:2px;display:inline-block;background:repeating-linear-gradient(90deg,var(--gold) 0px,var(--gold) 4px,transparent 4px,transparent 8px)"></span>IPK Target</span>
+        </div>
+      </div>
+
+      <!-- Inputs -->
+      <div class="target-inputs">
+        <div class="target-field">
+          <div class="tf-label">🎯 Target IPK</div>
+          <div class="tf-input-wrap">
+            <input class="tf-input" type="number" id="t-target" min="0" max="4" step="0.01" value="3.51" oninput="calcTarget()"/>
+            <span class="tf-unit">/ 4.00</span>
+          </div>
+          <input class="tf-range" type="range" min="0" max="4" step="0.01" value="3.51"
+            oninput="document.getElementById('t-target').value=parseFloat(this.value).toFixed(2);calcTarget()"/>
+          <div style="font-size:.62rem;color:var(--text3);margin-top:.4rem" id="target-predikat-hint">Dengan Pujian (≥ 3.51)</div>
+        </div>
+        <div class="target-field">
+          <div class="tf-label">📚 Sisa SKS yang Diambil</div>
+          <div class="tf-input-wrap">
+            <input class="tf-input" type="number" id="t-sks" min="1" max="200" step="1" value="20" oninput="calcTarget()"/>
+            <span class="tf-unit">SKS</span>
+          </div>
+          <input class="tf-range" type="range" min="1" max="144" step="1" value="20"
+            oninput="document.getElementById('t-sks').value=this.value;calcTarget()"/>
+          <div style="font-size:.62rem;color:var(--text3);margin-top:.4rem" id="bl-sks-info">—</div>
+        </div>
+        <div class="target-field">
+          <div class="tf-label">⚙️ Asumsi Rata-rata Poin BL</div>
+          <div class="tf-input-wrap">
+            <input class="tf-input" type="number" id="t-assume" min="0" max="4" step="0.1" value="3.0" oninput="calcTarget()"/>
+            <span class="tf-unit">poin</span>
+          </div>
+          <input class="tf-range" type="range" min="0" max="4" step="0.1" value="3.0"
+            oninput="document.getElementById('t-assume').value=parseFloat(this.value).toFixed(1);calcTarget()"/>
+          <div style="font-size:.62rem;color:var(--text3);margin-top:.4rem">Poin rata-rata yang kamu targetkan untuk semua MK BL</div>
+        </div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="target-status-bar" id="target-status-bar">
+        <div class="tsb-icon" id="tsb-icon">⏳</div>
+        <div class="tsb-text">
+          <div class="tsb-main" id="tsb-main">Menghitung...</div>
+          <div class="tsb-detail" id="tsb-detail"></div>
+        </div>
+      </div>
+
+      <!-- Result blocks (4 panels) -->
+      <div class="target-result" id="target-result-blocks" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))"></div>
+
+      <div class="section-divider">Skenario Nilai Sisa SKS</div>
+      <div id="scen-panel" style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem"></div>
+
+      <div class="section-divider">Estimasi Per Nilai</div>
+
+      <!-- Grade estimator table -->
+      <div style="font-size:.75rem;color:var(--text2);margin-bottom:.75rem;font-weight:600">
+        📋 Berapa IPK akhir jika semua sisa MK mendapat nilai tertentu?
+      </div>
+      <div class="grade-est-wrap">
+        <table class="grade-est" id="grade-est-table">
+          <thead>
+            <tr>
+              <th>Nilai</th>
+              <th>Poin</th>
+              <th>Progress ke Target</th>
+              <th class="c">IPK Hasil</th>
+              <th class="c">Predikat</th>
+              <th class="c">Kelayakan</th>
+            </tr>
+          </thead>
+          <tbody id="grade-est-body"></tbody>
+        </table>
+      </div>
+
+      <div class="section-divider">Skenario Minimum</div>
+
+      <!-- Minimum grade info -->
+      <div id="min-grade-panel" style="padding:.5rem 0"></div>
+
+      <div class="section-divider">Tips &amp; Strategi</div>
+      <div id="target-tips" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem"></div>
+    </div>
+
+    <!-- MK BL list -->
+    <div class="card fade-in">
+      <div class="card-head">
+        <span class="card-title">🔴 Daftar MK Belum Lulus (BL)</span>
+        <span class="card-sub" id="bl-count-label">—</span>
+      </div>
+      <div id="bl-list-wrap">
+        <div style="font-size:.78rem;color:var(--text3);padding:.5rem">Tidak ada MK belum lulus.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB: COMPARE ══════════ -->
+<div id="tab-compare" class="tab-pane">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Daftar Mahasiswa (Maks. 5)</span>
+      <button class="btn btn-primary" onclick="document.getElementById('fi-compare').click()">⬆ Import LKAM</button>
+      <input type="file" id="fi-compare" accept=".pdf,application/pdf" onchange="onFileSelect(event,'compare')"/>
+    </div>
+    <div class="progress-wrap" id="prog-compare" style="margin-bottom:.75rem">
+      <div class="prog-header">
+        <div class="prog-label" id="prog-lbl-compare">Membaca PDF...</div>
+        <div class="prog-pct" id="prog-stat-compare">0%</div>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill-compare" style="width:0%"></div></div>
+      <div class="prog-status" id="prog-sub-compare"></div>
+    </div>
+    <div class="error-box" id="err-compare"></div>
+    <div class="student-list" id="student-list">
+      <div style="font-size:.78rem;color:var(--text3);padding:.5rem">Belum ada mahasiswa. Import PDF LKAM untuk memulai perbandingan.</div>
+    </div>
+  </div>
+  <div id="compare-content" style="display:none">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Perbandingan IPK</span></div>
+      <div id="cmp-ipk-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">IPK per Semester</span>
+        <span class="card-sub">Warna tiap bar = tiap mahasiswa</span>
+      </div>
+      <div id="cmp-sem-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Ringkasan Perbandingan</span></div>
+      <div class="table-wrap" style="margin-bottom:0;box-shadow:none;border:none">
+        <table>
+          <thead>
+            <tr>
+              <th>Nama</th><th>NIM</th><th>Program Studi</th>
+              <th class="c">SKS Lulus</th><th class="c">MK Lulus</th><th class="c">MK Belum</th><th class="c">IPK</th><th class="c">Predikat</th>
+            </tr>
+          </thead>
+          <tbody id="cmp-tbl"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- .page -->
+
+<script>
+/* ═══════════════════════════════════════════════
+   PDF.js setup
+═══════════════════════════════════════════════ */
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+/* ═══════════════════════════════════════════════
+   GLOBALS
+═══════════════════════════════════════════════ */
+const GP={'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'D':1.0,'E':0.0};
+const GP_NAMES=['A','A-','B+','B','B-','C+','C','D','E'];
+const STUDENT_COLORS=['#3B82F6','#10B981','#F59E0B','#8B5CF6','#EF4444'];
+
+let STUDENT={}, COURSES=[], KESETARAAN=[], EXTRA=[];
+let sortCol=null, sortDir=1, extraId=0;
+let CMP_STUDENTS=[], CMP_ACTIVE=0;
+
+/* ═══════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════ */
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='tab-target') renderTargetTab();
+}
+
+/* ═══════════════════════════════════════════════
+   FILE HANDLING
+═══════════════════════════════════════════════ */
+function onDrop(e,mode){
+  e.preventDefault(); e.currentTarget.classList.remove('drag');
+  const file=e.dataTransfer.files[0]; if(file) processFile(file,mode);
+}
+function onFileSelect(e,mode){
+  const file=e.target.files[0]; if(file) processFile(file,mode); e.target.value='';
+}
+function setProgress(mode,pct,lbl,sub){
+  document.getElementById('prog-'+mode).style.display='block';
+  document.getElementById('prog-fill-'+mode).style.width=pct+'%';
+  if(lbl) document.getElementById('prog-lbl-'+mode).textContent=lbl;
+  document.getElementById('prog-stat-'+mode).textContent=pct+'%';
+  if(sub!=null) document.getElementById('prog-sub-'+mode).textContent=sub;
+}
+function hideProgress(mode){document.getElementById('prog-'+mode).style.display='none';}
+function showError(mode,msg){
+  const el=document.getElementById('err-'+mode);
+  el.style.display='block'; el.innerHTML='⚠ '+msg;
+  setTimeout(()=>el.style.display='none',9000);
+}
+function showInfo(mode,msg){
+  const el=document.getElementById('info-'+mode);
+  if(!el) return; el.style.display='block'; el.innerHTML='ℹ '+msg;
+  setTimeout(()=>el.style.display='none',7000);
+}
+
+async function processFile(file,mode){
+  if(!file.name.toLowerCase().endsWith('.pdf')&&file.type!=='application/pdf'){
+    showError(mode,'File harus berformat PDF (.pdf)'); return;
+  }
+  if(mode==='single'){
+    document.getElementById('drop-zone').style.display='none';
+    document.getElementById('err-single').style.display='none';
+    document.getElementById('info-single').style.display='none';
+  }
+  setProgress(mode,10,'Membuka file PDF...','Inisialisasi PDF.js...');
+  try {
+    setProgress(mode,25,'Mengekstrak teks dari semua halaman...','Memuat dokumen PDF...');
+    const text=await extractTextWithPDFjs(file,mode);
+    setProgress(mode,70,'Mem-parsing data LKAM...','Menganalisis struktur data...');
+    const parsed=parseLKAM(text);
+    setProgress(mode,90,'Menghitung IPK...','Menjumlahkan mutu dan SKS...');
+    const hasData=parsed.nim||parsed.nama||parsed.courses.length>0||parsed.kesetaraan.length>0;
+    if(!hasData){
+      const excerpt=text.substring(0,200).replace(/\n/g,' ');
+      throw new Error(`Format tidak dikenali sebagai LKAM UT. Cuplikan teks: "${excerpt.substring(0,120)}..."`);
+    }
+    setProgress(mode,100,'Selesai!','Data berhasil dimuat.');
+    if(mode==='single'){
+      STUDENT={nim:parsed.nim,nama:parsed.nama,prodi:parsed.prodi,ut:parsed.ut_daerah,summary:parsed.summary};
+      COURSES=parsed.courses; KESETARAAN=parsed.kesetaraan; EXTRA=[]; sortCol=null; sortDir=1;
+      const warn=[];
+      if(!parsed.nim) warn.push('NIM tidak terbaca');
+      if(!parsed.nama) warn.push('Nama tidak terbaca');
+      if(parsed.courses.length===0) warn.push('Daftar MK kosong');
+      if(warn.length>0) showInfo('single','Data parsial: '+warn.join(', ')+'. Periksa kembali hasil parsing.');
+      setTimeout(()=>{ hideProgress('single'); renderAll(); document.getElementById('app-single').style.display='block'; },350);
+    } else {
+      if(CMP_STUDENTS.length>=5){ showError('compare','Maksimal 5 mahasiswa.'); hideProgress('compare'); return; }
+      if(CMP_STUDENTS.find(s=>s.student.nim&&s.student.nim===parsed.nim)){
+        showError('compare','Mahasiswa ini sudah ada.'); hideProgress('compare'); return;
+      }
+      CMP_STUDENTS.push({student:{nim:parsed.nim,nama:parsed.nama,prodi:parsed.prodi,ut:parsed.ut_daerah,summary:parsed.summary},courses:parsed.courses,kesetaraan:parsed.kesetaraan});
+      setTimeout(()=>{ hideProgress('compare'); renderCompare(); },350);
+    }
+  } catch(err){
+    hideProgress(mode);
+    if(mode==='single') document.getElementById('drop-zone').style.display='block';
+    showError(mode,err.message||'Gagal membaca PDF. Pastikan file tidak terenkripsi atau rusak.');
+    console.error('[NINIS]',err);
+  }
+}
+function loadNew(){
+  document.getElementById('app-single').style.display='none';
+  document.getElementById('drop-zone').style.display='block';
+  document.getElementById('err-single').style.display='none';
+  document.getElementById('info-single').style.display='none';
+  COURSES=[]; KESETARAAN=[]; EXTRA=[]; STUDENT={}; sortCol=null; sortDir=1;
+  // Reset target tab
+  document.getElementById('target-no-data').style.display='block';
+  document.getElementById('target-content').style.display='none';
+}
+
+/* ═══════════════════════════════════════════════
+   PDF.js EXTRACTION
+═══════════════════════════════════════════════ */
+async function extractTextWithPDFjs(file,mode){
+  const arrayBuffer=await file.arrayBuffer();
+  const loadingTask=pdfjsLib.getDocument({data:arrayBuffer,useWorkerFetch:false});
+  const pdf=await loadingTask.promise;
+  const numPages=pdf.numPages; let fullText='';
+  for(let i=1;i<=numPages;i++){
+    const progress=Math.round(25+(i/numPages)*40);
+    setProgress(mode,progress,`Mengekstrak halaman ${i} dari ${numPages}...`,`Halaman ${i}/${numPages}`);
+    const page=await pdf.getPage(i);
+    const textContent=await page.getTextContent();
+    const items=textContent.items; if(items.length===0) continue;
+    const yGroups={};
+    items.forEach(item=>{
+      if(!item.str) return;
+      const y=Math.round(item.transform[5]);
+      if(!yGroups[y]) yGroups[y]=[];
+      yGroups[y].push({x:item.transform[4],str:item.str});
+    });
+    const sortedYs=Object.keys(yGroups).map(Number).sort((a,b)=>b-a);
+    sortedYs.forEach(y=>{
+      const lineStr=yGroups[y].sort((a,b)=>a.x-b.x).map(it=>it.str).join(' ').trim();
+      if(lineStr) fullText+=lineStr+'\n';
+    });
+  }
+  return fullText;
+}
+
+/* ═══════════════════════════════════════════════
+   LKAM PARSER
+═══════════════════════════════════════════════ */
+function parseLKAM(rawText){
+  const lines=rawText.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const res={nim:'',nama:'',prodi:'',ut_daerah:'',courses:[],kesetaraan:[],summary:{}};
+  for(const line of lines){
+    let m;
+    m=line.match(/NIM\s*[:\s]\s*(\d{6,12})/); if(m) res.nim=m[1];
+    m=line.match(/Nama\s*[:\s]\s*([A-Z][A-Z\s.',-]{2,}?)(?:\s{2,}|Program Studi|$)/);
+    if(m&&m[1].trim().length>2) res.nama=m[1].trim();
+    m=line.match(/Program Studi\s*[:\s]\s*(.+)/);
+    if(m) res.prodi=m[1].replace(/\s{2,}.*/,'').trim();
+    m=line.match(/UT Daerah\s*[:\s]\s*(.+)/);
+    if(m) res.ut_daerah=m[1].replace(/\s{2,}.*/,'').trim();
+    m=line.match(/IPK\s*=>\s*([\d.]+)\s*[:/]\s*([\d.]+)\s*=\s*([\d.]+)/);
+    if(m) res.summary={total_mutu:+m[1],total_sks:+m[2],ipk:+m[3]};
+  }
+  const RE_FULL=/^\s*\d*\s+((?:[A-Z]{2,5}\d{3,5})(?:\s*\([A-Z]{2,6}\d{3,5}\))?)\s+(.+?)\s{2,}(\d+)\s+([A-Z*+\-]+)\s+([\d.]+)\s+(LL|BL)\s+(\S+)\s+([A-Z\-]+)\s*$/;
+  const RE_CODE=/^\s+((?:[A-Z]{2,5}\d{3,5})(?:\s*\([A-Z]{2,6}\d{3,5}\))?)\s*$/;
+  const RE_DATA=/^\s*\d+\s+(.+?)\s{2,}(\d+)\s+([A-Z*+\-]+)\s+([\d.]+)\s+(LL|BL)\s+(\S+)\s+([A-Z\-]+)\s*$/;
+  const RE_SKIP=/^(NO\s+Kode|about:blank|\d+\/\d+,|\d{1,2}\/\d{1,2}\/\d{4}|Keterangan|Tanda\s|LL\s*=|BL\s*=|PI\s*=|I\s*=|N\s*=|Cek |Jumlah|Total\s|IPK\s*=>|\d+\.\s+Jumlah|Kode Mata|NIM\s|Nama\s*:|Alamat|KAB\s|Kode Pos|Tempat|UT Daerah|Program\s|REGIS|Jurusan|Lembar KEM)/;
+  const cleanName=n=>n.replace(/\s*\(Matakuliah Pilihan\)/g,'').replace(/\s+Pilihan\s*$/,'').trim();
+  let sem=null,inKes=false,pendingKode=null,idCounter=0;
+  const push=(kode,nama,sks,nilai,mutu,kel,masa,sti,s,kes)=>{
+    const obj={_id:'pdf-'+(++idCounter),kode:kode.trim(),nama:cleanName(nama),sks:parseInt(sks),nilai:nilai.trim(),mutu:parseFloat(mutu),kelulusan:kel.trim(),masa:masa.trim(),status_inti:sti.trim(),sem:s,kesetaraan:kes,extra:false,sim_nilai:null};
+    if(kes) res.kesetaraan.push(obj); else res.courses.push(obj);
+  };
+  for(const line of lines){
+    const stripped=line.trim(); if(!stripped) continue;
+    let m=stripped.match(/^SEMESTER\s+(\d+)$/);
+    if(m){sem=parseInt(m[1]);inKes=false;pendingKode=null;continue;}
+    if(stripped.includes('MATA KULIAH KESETARAAN')){inKes=true;pendingKode=null;continue;}
+    if(RE_SKIP.test(stripped)) continue;
+    m=line.match(RE_CODE);
+    if(m&&!RE_DATA.test(line)){pendingKode=m[1].trim();continue;}
+    m=line.match(RE_FULL);
+    if(m){pendingKode=null;push(m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8],sem,inKes);continue;}
+    if(pendingKode){m=line.match(RE_DATA);if(m){push(pendingKode,m[1],m[2],m[3],m[4],m[5],m[6],m[7],sem,inKes);pendingKode=null;}}
+  }
+  return res;
+}
+
+/* ═══════════════════════════════════════════════
+   CALCULATIONS
+═══════════════════════════════════════════════ */
+function poin(nilai){return GP[nilai]??null;}
+function effectiveNilai(c){return c.sim_nilai||c.nilai;}
+function calcIPK(list){
+  let sks=0,mutu=0;
+  list.forEach(c=>{
+    const n=effectiveNilai(c);
+    if(n==='**'||n==='-') return;
+    const kel=c.sim_nilai?(GP[c.sim_nilai]!=null&&GP[c.sim_nilai]>0?'LL':'BL'):c.kelulusan;
+    if(kel==='BL') return;
+    const p=poin(n); if(p===null) return;
+    sks+=c.sks; mutu+=p*c.sks;
+  });
+  return {sks,mutu,ipk:sks>0?mutu/sks:0};
+}
+function ipkPredikat(ipk){
+  if(ipk>=3.51) return 'Dengan Pujian';
+  if(ipk>=3.01) return 'Sangat Memuaskan';
+  if(ipk>=2.76) return 'Memuaskan';
+  if(ipk>=2.00) return 'Cukup';
+  return 'Perlu Peningkatan';
+}
+function gradeClass(v){
+  const n=v||'';
+  if(n==='**'||n==='-') return 'gr-x';
+  if(n.startsWith('A')) return 'gr-a';
+  if(n.startsWith('B')) return 'gr-b';
+  if(n.startsWith('C')) return 'gr-c';
+  return 'gr-d';
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER — SINGLE
+═══════════════════════════════════════════════ */
+function renderAll(){renderHeader();renderMetrics();renderChart();renderTable();}
+function renderHeader(){
+  const all=[...COURSES,...KESETARAAN,...EXTRA];
+  const {sks,mutu,ipk}=calcIPK(all);
+  document.getElementById('h-nama').textContent=STUDENT.nama||'Mahasiswa';
+  document.getElementById('h-nim').textContent=STUDENT.nim||'—';
+  document.getElementById('h-prodi').textContent=STUDENT.prodi||'—';
+  document.getElementById('h-ut').textContent=STUDENT.ut||'—';
+  document.getElementById('h-ipk').textContent=ipk.toFixed(2);
+  document.getElementById('h-grade').textContent=ipkPredikat(ipk);
+}
+function renderMetrics(){
+  const all=[...COURSES,...KESETARAAN,...EXTRA];
+  const {sks,mutu,ipk}=calcIPK(all);
+  const ll=all.filter(c=>{const n=effectiveNilai(c);return c.kelulusan==='LL'&&n!=='**'||(c.sim_nilai&&GP[c.sim_nilai]>0);}).length;
+  const bl=all.filter(c=>{return c.kelulusan==='BL'&&!c.sim_nilai;}).length;
+  const totSKS_blm=COURSES.filter(c=>c.kelulusan==='BL'&&!c.sim_nilai).reduce((a,b)=>a+b.sks,0);
+  const sems=new Set(COURSES.map(c=>c.sem).filter(s=>s&&s>0)).size;
+  document.getElementById('metrics-row').innerHTML=`
+    <div class="metric"><div class="m-lbl">IPK Saat Ini</div><div class="m-val blue">${ipk.toFixed(2)}</div></div>
+    <div class="metric"><div class="m-lbl">Total SKS Lulus</div><div class="m-val">${sks}</div></div>
+    <div class="metric"><div class="m-lbl">MK Lulus</div><div class="m-val green">${ll}</div></div>
+    <div class="metric"><div class="m-lbl">MK Belum Lulus</div><div class="m-val red">${bl}</div></div>
+    <div class="metric"><div class="m-lbl">SKS Belum Lulus</div><div class="m-val amber">${totSKS_blm}</div></div>
+    <div class="metric"><div class="m-lbl">Semester Aktif</div><div class="m-val purple">${sems}</div></div>`;
+}
+function renderChart(){
+  const all=[...COURSES,...KESETARAAN,...EXTRA];
+  let html='';
+  [1,2,3,4,5,6,7,8].forEach(s=>{
+    const {sks,mutu,ipk}=calcIPK(all.filter(c=>c.sem===s));
+    if(sks===0) return;
+    const pct=((ipk/4)*100).toFixed(1);
+    const color=ipk>=3.5?'#10B981':ipk>=3.0?'#3B82F6':ipk>=2.5?'#F59E0B':'#EF4444';
+    html+=`<div class="bar-row">
+      <span class="bar-lbl">Sem ${s}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"><span class="bar-txt">${sks} SKS · Mutu ${mutu.toFixed(0)}</span></div></div>
+      <span class="bar-ipk" style="color:${color}">${ipk.toFixed(2)}</span>
+    </div>`;
+  });
+  document.getElementById('chart-bars').innerHTML=html||'<p style="font-size:.78rem;color:var(--text3);text-align:center;padding:.75rem">Tidak ada data semester.</p>';
+}
+function renderTable(){
+  renderHeader();renderMetrics();renderChart();
+  const semF=document.getElementById('f-sem').value;
+  const statF=document.getElementById('f-stat').value;
+  const showF=document.getElementById('f-show').value;
+  const intiF=document.getElementById('f-inti').value;
+  const search=document.getElementById('f-search').value.toLowerCase().trim();
+  let data=[...COURSES,...KESETARAAN,...EXTRA].filter(c=>{
+    if(semF&&String(c.sem)!==semF) return false;
+    if(statF&&c.kelulusan!==statF) return false;
+    if(showF==='ll'&&c.kelulusan==='BL'&&!c.sim_nilai) return false;
+    if(intiF&&c.status_inti!==intiF) return false;
+    if(search&&!c.kode.toLowerCase().includes(search)&&!c.nama.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  if(sortCol){
+    data.sort((a,b)=>{
+      let va=a[sortCol],vb=b[sortCol];
+      if(sortCol==='nilai'){va=GP[effectiveNilai(a)]??-1;vb=GP[effectiveNilai(b)]??-1;}
+      if(sortCol==='mutu'||sortCol==='sks'){va=+va;vb=+vb;}
+      return va<vb?-sortDir:va>vb?sortDir:0;
+    });
+  }
+  document.querySelectorAll('thead th[data-col]').forEach(th=>{
+    th.classList.remove('sort-asc','sort-desc');
+    if(th.dataset.col===sortCol) th.classList.add(sortDir===1?'sort-asc':'sort-desc');
+  });
+  const NILAI_OPTS=['A','A-','B+','B','B-','C+','C','D','E','-'];
+  let rows='';
+  data.forEach(c=>{
+    const dispNilai=effectiveNilai(c);
+    const p=poin(dispNilai);
+    const effKel=c.sim_nilai?(GP[c.sim_nilai]!=null&&GP[c.sim_nilai]>0?'LL':'BL'):c.kelulusan;
+    const mp=p!==null?p.toFixed(1):'—';
+    const ms=(p!==null&&effKel==='LL')?(p*c.sks).toFixed(1):'—';
+    const semBadge=c.kesetaraan?`<span class="badge b-kes">Kes.</span>`:c.extra?`<span class="badge b-extra">Sim</span>`:c.sem?`<span class="badge b-sem">${c.sem}</span>`:'—';
+    const statBadge=effKel==='LL'?`<span class="badge b-ll">Lulus</span>`:`<span class="badge b-bl">Belum Lulus</span>`;
+    let nilaiCell;
+    if(c.kelulusan==='BL'&&!c.extra){
+      const opts=NILAI_OPTS.map(n=>`<option value="${n}" ${dispNilai===n?'selected':''}>${n}</option>`).join('');
+      nilaiCell=`<select class="nilai-select ${gradeClass(dispNilai)}" onchange="simNilai('${c._id}',this.value)">${opts}</select>`;
+    } else {
+      nilaiCell=`<span class="gr ${gradeClass(dispNilai)}">${dispNilai}</span>`;
+    }
+    const delBtn=c.extra?`<button class="del-btn" onclick="deleteExtra('${c._id}')" title="Hapus">✕</button>`:'';
+    rows+=`<tr>
+      <td class="code">${c.kode}</td><td>${c.nama}</td><td class="c">${semBadge}</td>
+      <td class="c">${c.sks}</td><td class="c">${nilaiCell}</td>
+      <td class="c">${mp}</td><td class="c">${ms}</td><td class="c">${statBadge}</td>
+      <td class="c" style="font-size:.65rem;color:var(--text3)">${c.status_inti||'—'}</td>
+      <td class="c">${delBtn}</td>
+    </tr>`;
+  });
+  if(!rows) rows=`<tr><td colspan="10" style="text-align:center;color:var(--text3);padding:2rem;font-size:.78rem">Tidak ada mata kuliah yang sesuai filter.</td></tr>`;
+  document.getElementById('tbl-body').innerHTML=rows;
+  const {sks,mutu,ipk}=calcIPK(data);
+  const totSKS=data.reduce((a,b)=>a+b.sks,0);
+  document.getElementById('tbl-foot').innerHTML=`<tr>
+    <td colspan="3" style="color:var(--text3);font-size:.68rem">Total (${data.length} MK)</td>
+    <td class="c">${totSKS}</td><td></td>
+    <td class="c">${mutu.toFixed(0)}</td><td class="c">${mutu.toFixed(0)}</td>
+    <td class="c" colspan="3" style="color:var(--accent2);font-weight:800">IPK: ${sks>0?ipk.toFixed(2):'—'}</td>
+  </tr>`;
+}
+
+/* ═══════════════════════════════════════════════
+   TARGET IPK — RENDER TAB
+═══════════════════════════════════════════════ */
+function renderTargetTab(){
+  const all=[...COURSES,...KESETARAAN,...EXTRA];
+  if(all.length===0){
+    document.getElementById('target-no-data').style.display='block';
+    document.getElementById('target-content').style.display='none';
+    return;
+  }
+  document.getElementById('target-no-data').style.display='none';
+  document.getElementById('target-content').style.display='block';
+
+  // Auto-fill sisa SKS dari MK BL
+  const blCourses=COURSES.filter(c=>c.kelulusan==='BL');
+  const blSKS=blCourses.reduce((a,b)=>a+b.sks,0);
+  if(blSKS>0){
+    document.getElementById('t-sks').value=blSKS;
+    document.getElementById('t-sks').previousElementSibling&&null;
+    // sync slider
+    const slider=document.getElementById('t-sks').nextElementSibling;
+    if(slider&&slider.type==='range') slider.value=blSKS;
+  }
+
+  renderBLList();
+  calcTarget();
+}
+
+function renderBLList(){
+  const blCourses=COURSES.filter(c=>c.kelulusan==='BL');
+  const blSKS=blCourses.reduce((a,b)=>a+b.sks,0);
+  document.getElementById('bl-count-label').textContent=`${blCourses.length} mata kuliah · ${blSKS} SKS`;
+
+  if(blCourses.length===0){
+    document.getElementById('bl-list-wrap').innerHTML='<div style="font-size:.78rem;color:var(--green2);padding:.75rem">🎉 Selamat! Tidak ada MK yang belum lulus.</div>';
+    return;
+  }
+
+  // Current IPK baseline (all BL not simulated)
+  const all=[...COURSES,...KESETARAAN,...EXTRA];
+  const {sks:baseSKS,mutu:baseMutu,ipk:baseIPK}=calcIPK(all);
+
+  const GP_OPTS=['A','A-','B+','B','B-','C+','C','D','E'];
+  let rows='';
+  blCourses.forEach(c=>{
+    const simVal=c.sim_nilai||'';
+    // Impact: if this MK got nilai X
+    const opts=GP_OPTS.map(n=>{
+      const p=GP[n];
+      const simIPK=(baseMutu+p*c.sks)/(baseSKS+c.sks);
+      const delta=simIPK-baseIPK;
+      return `<option value="${n}" ${simVal===n?'selected':''}>${n} (+${delta.toFixed(2)})</option>`;
+    }).join('');
+
+    // If already simulated, show the delta
+    let deltaHtml='';
+    if(c.sim_nilai){
+      const p=GP[c.sim_nilai];
+      const simIPK=(baseMutu+p*c.sks)/(baseSKS+c.sks);
+      const delta=simIPK-baseIPK;
+      const col=delta>0?'var(--green2)':'var(--red2)';
+      deltaHtml=`<span style="font-family:'DM Mono',monospace;font-size:.68rem;color:${col};font-weight:700">${delta>=0?'+':''}${delta.toFixed(3)} IPK</span>`;
+    }
+
+    rows+=`<tr>
+      <td class="code">${c.kode}</td>
+      <td style="font-size:.75rem">${c.nama}</td>
+      <td class="c"><span class="badge b-sem">${c.sem||'—'}</span></td>
+      <td class="c" style="font-weight:700">${c.sks}</td>
+      <td class="c"><span class="gr gr-d">${c.nilai}</span></td>
+      <td class="c">
+        <select class="nilai-select" style="font-size:.68rem" onchange="simBLNilai('${c._id}',this.value)">
+          <option value="">— Simulasi</option>${opts}
+        </select>
+      </td>
+      <td class="c">${deltaHtml}</td>
+    </tr>`;
+  });
+
+  // Simulated IPK total
+  const {sks:simSKS,mutu:simMutu,ipk:simIPK}=calcIPK(all);
+  const hasAnySim=blCourses.some(c=>c.sim_nilai);
+  const simSummary=hasAnySim?`
+    <div style="display:flex;align-items:center;gap:12px;padding:.75rem 1rem;background:var(--surface3);border-top:1px solid var(--border);font-size:.75rem;flex-wrap:wrap">
+      <span style="color:var(--text3)">Simulasi aktif:</span>
+      <span>IPK saat ini <strong style="color:var(--accent2)">${baseIPK.toFixed(2)}</strong></span>
+      <span style="color:var(--text3)">→</span>
+      <span>IPK proyeksi <strong style="color:${simIPK>=baseIPK?'var(--green2)':'var(--red2)'}">${simIPK.toFixed(2)}</strong></span>
+      <span style="color:${simIPK>=baseIPK?'var(--green2)':'var(--red2)'}">( ${simIPK>=baseIPK?'+':''}${(simIPK-baseIPK).toFixed(3)} )</span>
+      <span style="color:var(--text3)">·</span>
+      <strong style="color:${simIPK>=3.51?'var(--gold)':'var(--text2)'}">${ipkPredikat(simIPK)}</strong>
+      <button class="btn btn-red" style="padding:4px 10px;font-size:.68rem;margin-left:auto" onclick="resetSimBL()">↺ Reset Simulasi BL</button>
+    </div>`:
+    `<div style="padding:.6rem 1rem;font-size:.7rem;color:var(--text3);border-top:1px solid var(--border);background:var(--surface3)">
+      💡 Pilih nilai pada kolom "Simulasi" untuk melihat dampak perubahan nilai per MK terhadap IPK.
+    </div>`;
+
+  document.getElementById('bl-list-wrap').innerHTML=`
+    <div class="table-wrap" style="margin-bottom:0;box-shadow:none;border:none">
+      <table>
+        <thead><tr>
+          <th>Kode</th><th>Nama Mata Kuliah</th>
+          <th class="c">Sem</th><th class="c">SKS</th>
+          <th class="c">Nilai</th>
+          <th class="c" style="color:var(--gold)">🎯 Simulasi Nilai</th>
+          <th class="c">Dampak IPK</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    ${simSummary}`;
+}
+
+/* ═══════════════════════════════════════════════
+   TARGET IPK — CALCULATOR
+═══════════════════════════════════════════════ */
+function resetTargetCalc(){
+  document.getElementById('t-target').value='3.51';
+  document.getElementById('t-assume').value='3.0';
+  const blSKS=COURSES.filter(c=>c.kelulusan==='BL').reduce((a,b)=>a+b.sks,0);
+  document.getElementById('t-sks').value=blSKS||20;
+  // sync sliders
+  ['t-target','t-sks','t-assume'].forEach(id=>{
+    const inp=document.getElementById(id);
+    const slider=inp.nextElementSibling;
+    if(slider&&slider.type==='range') slider.value=inp.value;
+  });
+  calcTarget();
+}
+
+function calcTarget(){
+  const all=[...COURSES,...KESETARAAN,...EXTRA];
+  const {sks:curSKS,mutu:curMutu,ipk:curIPK}=calcIPK(all);
+
+  const targetIPK=Math.min(4,Math.max(0,parseFloat(document.getElementById('t-target').value)||0));
+  const additionalSKS=Math.max(1,parseInt(document.getElementById('t-sks').value)||1);
+  const assumePoin=Math.min(4,Math.max(0,parseFloat(document.getElementById('t-assume').value)||0));
+
+  // Sync sliders two-way
+  const syncSlider=(id,val)=>{
+    const inp=document.getElementById(id);
+    const sl=inp.nextElementSibling;
+    if(sl&&sl.type==='range') sl.value=val;
+  };
+  syncSlider('t-target',targetIPK);
+  syncSlider('t-sks',additionalSKS);
+  syncSlider('t-assume',assumePoin);
+
+  // BL stats (needed throughout)
+  const blCourses=COURSES.filter(c=>c.kelulusan==='BL');
+  const blSKS=blCourses.reduce((a,b)=>a+b.sks,0);
+  const blCount=blCourses.length;
+
+  // Predikat hint for target slider
+  let hintText='Perlu Peningkatan (< 2.00)';
+  if(targetIPK>=3.51) hintText='Dengan Pujian / Cum Laude (≥ 3.51)';
+  else if(targetIPK>=3.01) hintText='Sangat Memuaskan (≥ 3.01)';
+  else if(targetIPK>=2.76) hintText='Memuaskan (≥ 2.76)';
+  else if(targetIPK>=2.00) hintText='Cukup (≥ 2.00)';
+  document.getElementById('target-predikat-hint').textContent=hintText;
+  document.getElementById('bl-sks-info').textContent=blSKS>0?`${blCount} MK BL · ${blSKS} SKS terdeteksi dari LKAM`:'Masukkan estimasi SKS yang akan diambil';
+
+  // ── CORE FORMULA ──────────────────────────────
+  // IPK_akhir = (curMutu + newSKS × X) / (curSKS + newSKS) = target
+  // → X = (target × (curSKS + newSKS) − curMutu) / newSKS
+  const totalSKSAfter = curSKS + additionalSKS;
+  const requiredMutuNew = targetIPK * totalSKSAfter - curMutu;
+  const requiredAvgPoin = requiredMutuNew / additionalSKS;
+
+  // Projected IPK if all additional SKS scored at assumePoin
+  const projectedMutu  = curMutu + (assumePoin * additionalSKS);
+  const projectedIPK   = projectedMutu / totalSKSAfter;
+
+  // ── 3 SKENARIO ────────────────────────────────
+  const scen = [
+    { label:'Optimis (semua A)',    poin:4.0  },
+    { label:'Moderat (rata-rata B+)',poin:3.3 },
+    { label:'Minimal (rata-rata B)', poin:3.0 },
+  ].map(s=>({
+    ...s,
+    ipk:(curMutu+s.poin*additionalSKS)/totalSKSAfter
+  }));
+
+  // ── CUM LAUDE ANALYSIS ────────────────────────
+  // How many more SKS of "A" (4.0) are needed starting from current state to hit 3.51?
+  const cumLaudeTarget=3.51;
+  const neededForCumLaude=(cumLaudeTarget*totalSKSAfter - curMutu)/4.0; // SKS of A needed
+  const cumlaudeGap=cumLaudeTarget-curIPK;
+
+  // ── UPDATE GAUGE ──────────────────────────────
+  updateGauge(curIPK, targetIPK, projectedIPK);
+  document.getElementById('gauge-cur-lbl').textContent=curIPK.toFixed(2);
+  document.getElementById('gauge-sub-lbl').textContent='IPK Saat Ini';
+
+  // ── STATUS BAR ────────────────────────────────
+  let feasIcon,statusMain,statusDetail;
+  if(requiredAvgPoin<=0){
+    feasIcon='✅'; statusMain='Target Sudah Tercapai!';
+    statusDetail=`IPK saat ini (${curIPK.toFixed(2)}) sudah melampaui target ${targetIPK.toFixed(2)}. Pertahankan!`;
+  } else if(requiredAvgPoin<=2.0){
+    feasIcon='🟢'; statusMain='Sangat Bisa Dicapai';
+    statusDetail=`Cukup rata-rata nilai C–B (poin ${requiredAvgPoin.toFixed(2)}/SKS) dari ${additionalSKS} SKS.`;
+  } else if(requiredAvgPoin<=3.0){
+    feasIcon='🔵'; statusMain='Bisa Dicapai dengan Usaha Konsisten';
+    statusDetail=`Butuh rata-rata B–A- (poin ${requiredAvgPoin.toFixed(2)}/SKS) dari ${additionalSKS} SKS yang direncanakan.`;
+  } else if(requiredAvgPoin<=3.7){
+    feasIcon='🟡'; statusMain='Cukup Menantang — Perlu Persiapan Serius';
+    statusDetail=`Butuh rata-rata A- hingga A (poin ${requiredAvgPoin.toFixed(2)}/SKS) dari ${additionalSKS} SKS.`;
+  } else if(requiredAvgPoin<=4.0){
+    feasIcon='🟠'; statusMain='Sangat Ketat — Hampir Mustahil Kecuali Semua A';
+    statusDetail=`Butuh poin ${requiredAvgPoin.toFixed(2)}/SKS — hanya bisa dengan nilai A (4.00) di semua MK.`;
+  } else {
+    feasIcon='🔴'; statusMain='Tidak Dapat Dicapai dengan Jumlah SKS Ini';
+    statusDetail=`Dibutuhkan poin ${requiredAvgPoin.toFixed(2)} yang melebihi batas 4.00. Tambah SKS atau turunkan target.`;
+  }
+  document.getElementById('tsb-icon').textContent=feasIcon;
+  document.getElementById('tsb-main').textContent=statusMain;
+  document.getElementById('tsb-detail').textContent=statusDetail;
+
+  // ── RESULT BLOCKS (4 panel) ───────────────────
+  const rb1Cls=requiredAvgPoin>4?'impossible':requiredAvgPoin>3.7?'warning':requiredAvgPoin<=0?'info':'feasible';
+  const rb2Cls=projectedIPK>=targetIPK?'feasible':projectedIPK>=targetIPK-0.2?'warning':'impossible';
+  const rb3Cls=curIPK>=cumLaudeTarget?'feasible':cumlaudeGap<=0.3?'warning':'impossible';
+
+  // Max achievable IPK (all additionalSKS = A)
+  const maxIPK=(curMutu+4.0*additionalSKS)/totalSKSAfter;
+  const rb4Cls=maxIPK>=targetIPK?'feasible':'impossible';
+
+  document.getElementById('target-result-blocks').innerHTML=`
+    <div class="result-block ${rb1Cls}">
+      <div class="rb-label">Poin Rata-rata Dibutuhkan</div>
+      <div class="rb-val">${requiredAvgPoin<=0?'✓':requiredAvgPoin>4?'>4.00':requiredAvgPoin.toFixed(2)}</div>
+      <div class="rb-sub">per SKS dari ${additionalSKS} SKS yang direncanakan</div>
+    </div>
+    <div class="result-block ${rb2Cls}">
+      <div class="rb-label">Proyeksi IPK (${assumePoin.toFixed(1)} poin/SKS)</div>
+      <div class="rb-val">${projectedIPK.toFixed(2)}</div>
+      <div class="rb-sub">${ipkPredikat(projectedIPK)} · ${projectedIPK>=targetIPK?'✅ Melampaui target':'⚠ Di bawah target'}</div>
+    </div>
+    <div class="result-block ${rb3Cls}">
+      <div class="rb-label">Gap ke Cum Laude (3.51)</div>
+      <div class="rb-val">${curIPK>=cumLaudeTarget?'✓':'+'+cumlaudeGap.toFixed(2)}</div>
+      <div class="rb-sub">${curIPK>=cumLaudeTarget?'Sudah Cum Laude 🎓':`Perlu ≈${Math.max(0,Math.ceil(neededForCumLaude))} SKS nilai A lagi`}</div>
+    </div>
+    <div class="result-block ${rb4Cls}">
+      <div class="rb-label">IPK Maksimum Mungkin</div>
+      <div class="rb-val">${maxIPK.toFixed(2)}</div>
+      <div class="rb-sub">jika semua ${additionalSKS} SKS mendapat A · ${maxIPK>=targetIPK?'Target tercapai':'Target tidak tercapai'}</div>
+    </div>`;
+
+  // ── SKENARIO CARDS ────────────────────────────
+  const scenHtml=scen.map(s=>{
+    const c=s.ipk>=targetIPK?'var(--green2)':s.ipk>=targetIPK-0.15?'var(--gold)':'var(--red2)';
+    const icon=s.ipk>=targetIPK?'✅':'❌';
+    return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1rem;flex:1;min-width:140px">
+      <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);font-weight:700;margin-bottom:5px">${s.label}</div>
+      <div style="font-size:1.5rem;font-weight:800;font-family:'DM Mono',monospace;color:${c}">${s.ipk.toFixed(2)}</div>
+      <div style="font-size:.65rem;color:${c};margin-top:3px">${icon} ${ipkPredikat(s.ipk)}</div>
+    </div>`;
+  }).join('');
+
+  // Find skenario div or create after result-blocks
+  let scenDiv=document.getElementById('scen-panel');
+  if(!scenDiv){
+    scenDiv=document.createElement('div');
+    scenDiv.id='scen-panel';
+    scenDiv.style.cssText='display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem';
+    document.getElementById('target-result-blocks').insertAdjacentElement('afterend',scenDiv);
+  }
+  scenDiv.innerHTML=`
+    <div style="width:100%;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:.25rem">📊 Skenario Nilai Sisa ${additionalSKS} SKS</div>
+    ${scenHtml}`;
+
+  // ── GRADE ESTIMATOR TABLE ─────────────────────
+  let estRows='';
+  GP_NAMES.forEach(grade=>{
+    const p=GP[grade];
+    const newMutu=curMutu+(p*additionalSKS);
+    const newIPK=newMutu/totalSKSAfter;
+    const gap=newIPK-targetIPK;
+    const pct=Math.min(100,Math.max(0,(newIPK/4)*100));
+    const color=newIPK>=3.5?'#10B981':newIPK>=3.0?'#3B82F6':newIPK>=2.5?'#F59E0B':'#EF4444';
+    // Target line marker
+    const tgtPct=Math.min(100,Math.max(0,(targetIPK/4)*100));
+    const markerOffset=((pct-tgtPct)/100*80).toFixed(0); // rough
+
+    let feasLabel,feasCls;
+    if(newIPK>=targetIPK+0.15){feasLabel='Lebih dari cukup';feasCls='feas-easy';}
+    else if(newIPK>=targetIPK){feasLabel='✓ Target tercapai';feasCls='feas-ok';}
+    else if(gap>=-0.25){feasLabel='Hampir target';feasCls='feas-hard';}
+    else{feasLabel='Di bawah target';feasCls='feas-impossible';}
+
+    // Highlight row if this is the minimum passing grade
+    estRows+=`<tr>
+      <td><span class="ge-grade" style="color:${color};font-size:.88rem">${grade}</span></td>
+      <td class="ge-poin">${p.toFixed(1)}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="flex:1;background:var(--bg3);border-radius:99px;height:8px;overflow:hidden;position:relative">
+            <div style="height:100%;border-radius:99px;background:${color};width:${pct}%;transition:width .5s"></div>
+            <div style="position:absolute;top:-1px;bottom:-1px;width:2px;background:var(--gold);border-radius:1px;left:${tgtPct}%" title="Target IPK"></div>
+          </div>
+          <span style="font-size:.62rem;color:var(--text3);min-width:28px">${newIPK.toFixed(2)}</span>
+        </div>
+      </td>
+      <td class="c"><span class="ge-result-ipk" style="color:${color}">${newIPK.toFixed(2)}</span></td>
+      <td class="c"><span style="font-size:.63rem;color:var(--text3)">${ipkPredikat(newIPK)}</span></td>
+      <td class="c"><span class="ge-feasibility ${feasCls}">${feasLabel}</span></td>
+    </tr>`;
+  });
+  document.getElementById('grade-est-body').innerHTML=estRows;
+
+  // ── MINIMUM GRADE PANEL ───────────────────────
+  let minGradeFound=null;
+  for(let i=GP_NAMES.length-1;i>=0;i--){
+    const grade=GP_NAMES[i]; const p=GP[grade];
+    const newIPK=(curMutu+p*additionalSKS)/totalSKSAfter;
+    if(newIPK>=targetIPK){minGradeFound={grade,p,newIPK};break;}
+  }
+  let minGradeHtml;
+  if(minGradeFound){
+    const col=minGradeFound.p>=3.0?'var(--green2)':minGradeFound.p>=2.0?'var(--gold)':'var(--red2)';
+    const delta=minGradeFound.newIPK-targetIPK;
+    minGradeHtml=`<div style="display:flex;align-items:stretch;gap:14px;flex-wrap:wrap">
+      <div style="background:var(--surface2);border:2px solid ${col};border-radius:var(--r-lg);padding:1.1rem 1.5rem;text-align:center;min-width:120px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 0 20px ${col}22">
+        <div style="font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);font-weight:700;margin-bottom:5px">Nilai Minimum</div>
+        <div style="font-size:2.6rem;font-weight:800;font-family:'DM Mono',monospace;color:${col};line-height:1">${minGradeFound.grade}</div>
+        <div style="font-size:.68rem;color:var(--text3);margin-top:4px">poin ${minGradeFound.p.toFixed(1)}/SKS</div>
+      </div>
+      <div style="flex:1;min-width:220px;display:flex;flex-direction:column;justify-content:center;gap:.5rem">
+        <div style="font-size:.85rem;font-weight:700;color:var(--text)">
+          Jika semua <strong>${additionalSKS} SKS</strong> mendapat nilai <span style="color:${col}">${minGradeFound.grade}</span>
+        </div>
+        <div style="font-size:.75rem;color:var(--text3);line-height:1.75">
+          IPK hasil: <strong style="color:${col}">${minGradeFound.newIPK.toFixed(2)}</strong> 
+          <span style="color:var(--green2)">(+${delta.toFixed(2)} di atas target)</span><br>
+          Predikat: <strong>${ipkPredikat(minGradeFound.newIPK)}</strong><br>
+          Ini nilai terendah yang masih bisa melampaui target IPK <strong>${targetIPK.toFixed(2)}</strong>.
+        </div>
+        ${blCount>0?`<div style="font-size:.7rem;color:var(--text3);background:var(--surface3);border-radius:var(--r-sm);padding:.5rem .75rem;line-height:1.6">
+          💡 Kamu punya <strong>${blCount} MK BL (${blSKS} SKS)</strong>. Prioritaskan MK ber-SKS besar untuk dampak IPK lebih signifikan.
+        </div>`:''}
+      </div>
+    </div>`;
+  } else {
+    minGradeHtml=`<div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r-lg);padding:1.1rem 1.3rem;font-size:.8rem;color:var(--red2);line-height:1.7">
+      <strong>⚠ Target Tidak Dapat Dicapai</strong><br>
+      Dengan ${additionalSKS} SKS, target IPK <strong>${targetIPK.toFixed(2)}</strong> tidak bisa dicapai bahkan dengan nilai A di semua MK
+      (IPK maks: <strong>${maxIPK.toFixed(2)}</strong>).<br>
+      💡 Pertimbangkan: tambah SKS rencana, atau sesuaikan target ke <strong>${Math.max(0,(curMutu+4.0*additionalSKS)/totalSKSAfter).toFixed(2)}</strong> (IPK maks yang bisa dicapai).
+    </div>`;
+  }
+  document.getElementById('min-grade-panel').innerHTML=minGradeHtml;
+
+  // ── TIPS & STRATEGI ───────────────────────────
+  const tips=[];
+  if(curIPK>=targetIPK){
+    tips.push({icon:'🏆',title:'Target Sudah Tercapai!',desc:'IPK kamu sudah melampaui target. Fokus mempertahankan dan tingkatkan lagi menuju predikat yang lebih tinggi!'});
+    if(curIPK<cumLaudeTarget) tips.push({icon:'🎓',title:`Menuju Cum Laude (butuh +${cumlaudeGap.toFixed(2)})`,desc:`IPK target Cum Laude adalah 3.51. Kamu butuh sekitar ${Math.max(0,Math.ceil(neededForCumLaude))} SKS lagi dengan nilai A untuk mencapainya.`});
+  } else {
+    if(requiredAvgPoin>3.7) tips.push({icon:'📚',title:'Studi Intensif Diperlukan',desc:'Target ketat butuh persiapan maksimal. Buat jadwal belajar rutin, kerjakan TMK, dan manfaatkan bimbingan tutor UT.'});
+    if(blCount>0){
+      const bigBL=blCourses.sort((a,b)=>b.sks-a.sks)[0];
+      tips.push({icon:'🔄',title:`Prioritaskan MK BL Ber-SKS Besar`,desc:`${bigBL.kode} (${bigBL.sks} SKS) punya dampak IPK terbesar. Nilai A di sana bisa menaikkan IPK signifikan karena bobot SKS-nya besar.`});
+    }
+    if(blSKS>additionalSKS) tips.push({icon:'📈',title:'Tambah Jumlah SKS',desc:`Kamu punya ${blSKS} SKS MK BL tapi hanya merencanakan ${additionalSKS} SKS. Mengambil lebih banyak MK sekaligus memberi lebih banyak peluang mendongkrak IPK.`});
+    tips.push({icon:'⚖',title:'Strategi Distribusi Nilai',desc:'Fokus mendapat A di MK ber-SKS besar (4–6 SKS) sebelum MK ber-SKS kecil. Setiap poin di MK 4 SKS = 4× dampak MK 1 SKS.'});
+    tips.push({icon:'📝',title:'Perhatikan MK Inti (I)',desc:'MK Inti biasanya jadi syarat kelulusan program. Pastikan nilai MK Inti memenuhi batas minimum dan beri waktu belajar lebih banyak.'});
+  }
+  if(tips.length%2!==0) tips.push({icon:'ℹ',title:'Tentang Rumus IPK UT',desc:'IPK = Σ(Poin×SKS) ÷ Σ SKS Lulus. Nilai E dan mata kuliah BL tidak dihitung. Kesetaraan mengikuti aturan konversi yang sama.'});
+  document.getElementById('target-tips').innerHTML=tips.map(t=>`
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:1.25rem;flex-shrink:0;margin-top:1px">${t.icon}</span>
+      <div>
+        <div style="font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:3px">${t.title}</div>
+        <div style="font-size:.72rem;color:var(--text3);line-height:1.65">${t.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   GAUGE ARC (SVG)
+   Arc goes from 180° (left) to 0° (right) — a
+   half-circle with cx=140, cy=140, r=110.
+   Fraction 0→1 maps angle 180°→0° (left→right).
+═══════════════════════════════════════════════ */
+function updateGauge(curIPK, tgtIPK, projIPK){
+  const R=110, cx=140, cy=140;
+  const totalLen=Math.PI*R;
+
+  const curFrac=Math.min(1,Math.max(0,curIPK/4));
+  const tgtFrac=Math.min(1,Math.max(0,tgtIPK/4));
+
+  const curEl=document.getElementById('gauge-cur-el');
+  const tgtEl=document.getElementById('gauge-tgt-el');
+  const tgtLbl=document.getElementById('gauge-tgt-lbl');
+
+  // Stroke-dasharray trick: totalLen = full arc length
+  curEl.style.strokeDasharray=totalLen;
+  curEl.style.strokeDashoffset=totalLen*(1-curFrac);
+
+  tgtEl.style.strokeDasharray=totalLen;
+  tgtEl.style.strokeDashoffset=totalLen*(1-tgtFrac);
+
+  // Draw a needle/dot at target position on the arc
+  // Angle: 0 fraction → π (180°, left side), 1 fraction → 0° (right side)
+  const tgtAngle=Math.PI*(1-tgtFrac); // 180° at 0, 0° at 1
+  const dotX=cx+R*Math.cos(tgtAngle);   // note: cos(π)=-1 → left; cos(0)=1 → right
+  const dotY=cy-R*Math.sin(tgtAngle);   // sin positive → up in screen (y inverted)
+
+  // Remove old needle if exists
+  const old=document.getElementById('gauge-needle');
+  if(old) old.remove();
+
+  // Add dot + label at correct arc position
+  const svg=curEl.closest('svg');
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.id='gauge-needle';
+
+  // Outer glow circle
+  const glow=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  glow.setAttribute('cx',dotX.toFixed(1)); glow.setAttribute('cy',dotY.toFixed(1));
+  glow.setAttribute('r','10'); glow.setAttribute('fill','rgba(245,158,11,.18)');
+  g.appendChild(glow);
+
+  // Marker dot
+  const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx',dotX.toFixed(1)); dot.setAttribute('cy',dotY.toFixed(1));
+  dot.setAttribute('r','5'); dot.setAttribute('fill','#F59E0B');
+  dot.setAttribute('stroke','#080C14'); dot.setAttribute('stroke-width','2');
+  g.appendChild(dot);
+
+  // Label positioned radially outward from dot
+  const labelR=R+22;
+  const lx=cx+labelR*Math.cos(tgtAngle);
+  const ly=cy-labelR*Math.sin(tgtAngle);
+  const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+  txt.setAttribute('x',lx.toFixed(1)); txt.setAttribute('y',(ly+4).toFixed(1));
+  txt.setAttribute('text-anchor','middle'); txt.setAttribute('font-size','9');
+  txt.setAttribute('fill','#F59E0B'); txt.setAttribute('font-family',"'DM Mono',monospace");
+  txt.setAttribute('font-weight','700');
+  txt.textContent=tgtIPK.toFixed(2);
+  g.appendChild(txt);
+
+  svg.appendChild(g);
+
+  // Update centre label
+  document.getElementById('gauge-cur-lbl').textContent=curIPK.toFixed(2);
+  document.getElementById('gauge-sub-lbl').textContent='IPK Saat Ini';
+  tgtLbl.style.display='none'; // label now drawn via needle
+}
+
+/* ═══════════════════════════════════════════════
+   SIMULATION
+═══════════════════════════════════════════════ */
+function simNilai(id,val){
+  const course=[...COURSES,...KESETARAAN].find(c=>c._id===id);
+  if(!course) return; course.sim_nilai=(val==='-')?null:val; renderTable();
+}
+
+/* ═══════════════════════════════════════════════
+   SORT / ADD / DELETE
+═══════════════════════════════════════════════ */
+function sortBy(col){if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=1;} renderTable();}
+function toggleAdd(){document.getElementById('add-panel').classList.toggle('open');}
+function addMK(){
+  const kode=document.getElementById('n-kode').value.trim()||'MK-BARU';
+  const nama=document.getElementById('n-nama').value.trim()||'Mata Kuliah Baru';
+  const sks=parseInt(document.getElementById('n-sks').value)||3;
+  const nilai=document.getElementById('n-nilai').value;
+  const sem=parseInt(document.getElementById('n-sem').value)||9;
+  const kel=(nilai==='-'||nilai==='E')?'BL':'LL';
+  EXTRA.push({_id:'ex-'+(++extraId),kode,nama,sks,nilai,mutu:GP[nilai]??0,kelulusan:kel,masa:'—',status_inti:'—',sem,kesetaraan:false,extra:true,sim_nilai:null});
+  document.getElementById('add-panel').classList.remove('open');
+  ['n-kode','n-nama'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('n-nilai').value='-';
+  renderTable();
+}
+function deleteExtra(id){EXTRA=EXTRA.filter(c=>c._id!==id);renderTable();}
+function resetExtra(){COURSES.forEach(c=>c.sim_nilai=null);KESETARAAN.forEach(c=>c.sim_nilai=null);EXTRA=[];renderTable();}
+
+/* ═══════════════════════════════════════════════
+   TARGET TAB — BL SIMULATION HELPERS
+═══════════════════════════════════════════════ */
+function simBLNilai(id, val){
+  // Find in COURSES (BL can only be there)
+  const c=COURSES.find(c=>c._id===id);
+  if(!c) return;
+  c.sim_nilai=val||null;
+  // Re-render BL list and recalc target
+  renderBLList();
+  calcTarget();
+  // Also refresh main table if it's rendered
+  if(document.getElementById('app-single').style.display!=='none') renderTable();
+}
+function resetSimBL(){
+  COURSES.forEach(c=>{ if(c.kelulusan==='BL') c.sim_nilai=null; });
+  renderBLList();
+  calcTarget();
+  if(document.getElementById('app-single').style.display!=='none') renderTable();
+}
+
+/* ═══════════════════════════════════════════════
+   COMPARE
+═══════════════════════════════════════════════ */
+function renderCompare(){
+  const list=document.getElementById('student-list');
+  if(CMP_STUDENTS.length===0){
+    list.innerHTML='<div style="font-size:.78rem;color:var(--text3);padding:.5rem">Belum ada mahasiswa. Import PDF LKAM untuk memulai perbandingan.</div>';
+    document.getElementById('compare-content').style.display='none'; return;
+  }
+  list.innerHTML='';
+  CMP_STUDENTS.forEach((s,i)=>{
+    const all=[...s.courses,...s.kesetaraan];
+    const {sks,mutu,ipk}=calcIPK(all);
+    const color=STUDENT_COLORS[i]||'#5E7294';
+    const card=document.createElement('div');
+    card.className='student-card'+(i===CMP_ACTIVE?' active':'');
+    card.onclick=()=>{CMP_ACTIVE=i;renderCompare();};
+    card.innerHTML=`
+      <button class="sc-del" onclick="event.stopPropagation();removeCmpStudent(${i})">✕</button>
+      <div class="sc-name">${s.student.nama||'Mahasiswa '+(i+1)}</div>
+      <div class="sc-meta">${s.student.nim||'—'} · ${(s.student.prodi||'—').split('/').slice(-1)[0]}</div>
+      <div class="sc-ipk"><span class="sc-ipk-val" style="color:${color}">${ipk.toFixed(2)}</span><span class="sc-ipk-grade">${ipkPredikat(ipk)}</span></div>`;
+    list.appendChild(card);
+  });
+  document.getElementById('compare-content').style.display='block';
+  renderCmpCharts(); renderCmpTable();
+}
+function removeCmpStudent(i){CMP_STUDENTS.splice(i,1);if(CMP_ACTIVE>=CMP_STUDENTS.length) CMP_ACTIVE=Math.max(0,CMP_STUDENTS.length-1);renderCompare();}
+function renderCmpCharts(){
+  let html='';
+  CMP_STUDENTS.forEach((s,i)=>{
+    const all=[...s.courses,...s.kesetaraan];
+    const {sks,mutu,ipk}=calcIPK(all);
+    const color=STUDENT_COLORS[i];
+    const pct=((ipk/4)*100).toFixed(1);
+    html+=`<div class="bar-row">
+      <span class="bar-lbl" style="color:${color};font-size:.68rem;min-width:120px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(s.student.nama||'Mhs '+(i+1)).split(' ').slice(0,2).join(' ')}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"><span class="bar-txt">${sks} SKS · ${mutu.toFixed(0)} mutu</span></div></div>
+      <span class="bar-ipk" style="color:${color}">${ipk.toFixed(2)}</span>
+    </div>`;
+  });
+  document.getElementById('cmp-ipk-bars').innerHTML=html;
+  let semHtml='';
+  [1,2,3,4,5,6,7,8].forEach(s=>{
+    const anyData=CMP_STUDENTS.some(st=>calcIPK([...st.courses,...st.kesetaraan].filter(c=>c.sem===s)).sks>0);
+    if(!anyData) return;
+    semHtml+=`<div class="cmp-row"><span class="cmp-lbl">Sem ${s}</span><div class="cmp-bars">`;
+    CMP_STUDENTS.forEach((st,i)=>{
+      const {sks,ipk}=calcIPK([...st.courses,...st.kesetaraan].filter(c=>c.sem===s));
+      if(sks===0){semHtml+=`<div class="cmp-bar" style="width:0%"></div>`;return;}
+      const pct=((ipk/4)*100).toFixed(1);
+      semHtml+=`<div class="cmp-bar" style="width:${pct}%;background:${STUDENT_COLORS[i]}">${ipk.toFixed(2)}</div>`;
+    });
+    semHtml+=`</div><div style="display:flex;flex-direction:column;gap:3px;min-width:38px">
+      ${CMP_STUDENTS.map((st,i)=>{const {sks,ipk}=calcIPK([...st.courses,...st.kesetaraan].filter(c=>c.sem===s));return `<span class="cmp-val" style="color:${STUDENT_COLORS[i]}">${sks>0?ipk.toFixed(2):'—'}</span>`;}).join('')}
+    </div></div>`;
+  });
+  document.getElementById('cmp-sem-bars').innerHTML=semHtml||'<p style="font-size:.78rem;color:var(--text3);text-align:center;padding:.75rem">Tidak ada data.</p>';
+}
+function renderCmpTable(){
+  let rows='';
+  CMP_STUDENTS.forEach((s,i)=>{
+    const all=[...s.courses,...s.kesetaraan];
+    const {sks,mutu,ipk}=calcIPK(all);
+    const ll=all.filter(c=>c.kelulusan==='LL'&&c.nilai!=='**').length;
+    const bl=all.filter(c=>c.kelulusan==='BL').length;
+    const color=STUDENT_COLORS[i];
+    rows+=`<tr>
+      <td style="font-weight:700;color:${color}">${s.student.nama||'—'}</td>
+      <td class="code">${s.student.nim||'—'}</td>
+      <td style="font-size:.72rem">${s.student.prodi||'—'}</td>
+      <td class="c">${sks}</td>
+      <td class="c"><span style="color:var(--green2);font-weight:700">${ll}</span></td>
+      <td class="c"><span style="color:var(--red2);font-weight:700">${bl}</span></td>
+      <td class="c" style="font-weight:800;font-family:'DM Mono',monospace;color:${color}">${ipk.toFixed(2)}</td>
+      <td class="c"><span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}44">${ipkPredikat(ipk)}</span></td>
+    </tr>`;
+  });
+  document.getElementById('cmp-tbl').innerHTML=rows||`<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:1.5rem;font-size:.78rem">Belum ada data.</td></tr>`;
+}
+
+/* Print */
+function printPage(){window.print();}
+</script>
+</body>
+</html>
